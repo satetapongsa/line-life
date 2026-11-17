@@ -70,14 +70,14 @@ supabase/migrations/          SQL schema, RLS, storage, seed, create_order
 
 1. สร้างโปรเจคที่ https://supabase.com (Region แนะนำ Singapore)
 2. รัน migration ตามลำดับชื่อไฟล์ใน `supabase/migrations/` เลือกได้ 2 วิธี
-   - **SQL Editor (ง่ายสุด):** เปิด SQL Editor → New query → คัดลอกเนื้อหาไฟล์ทีละไฟล์ตามลำดับ `…0001_schema` → `…0002_rls` → `…0003_storage` → `…0004_seed` → `…0005_create_order` → `…0006_more_menu` แล้วกด Run
+   - **SQL Editor (ง่ายสุด):** เปิด SQL Editor → New query → คัดลอกเนื้อหาไฟล์ทีละไฟล์ตามลำดับ `…0001_schema` → `…0002_rls` → `…0003_storage` → `…0004_seed` → `…0005_create_order` → `…0006_more_menu` → `…0007_menu_10_each` แล้วกด Run
    - **Supabase CLI:**
      ```bash
      npx supabase login
      npx supabase link --project-ref <project-ref>
      npx supabase db push
      ```
-3. ตรวจที่ Table Editor ว่ามีสินค้า 19 รายการ (เครื่องดื่ม 7 / เบเกอรี่ 6 / ของหวาน 6) และที่ Storage มี bucket `product-images` (public)
+3. ตรวจที่ Table Editor ว่ามีสินค้า 30 รายการ (เครื่องดื่ม/เบเกอรี่/ของหวาน หมวดละ 10) และที่ Storage มี bucket `product-images` (public)
 4. ไปที่ **Project Settings → API** คัดลอก
    - Project URL → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon` / publishable key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
