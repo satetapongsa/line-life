@@ -19,7 +19,7 @@ import type { Product } from "@/lib/types";
 
 export function ShopScreen() {
   const liff = useLiff();
-  const { status, categories, products, error, retry } = useProducts();
+  const { status, categories, products, error, retry, isDemo: isDemoMenu } = useProducts();
   const cart = useCart();
 
   const [category, setCategory] = useState("all");
@@ -79,9 +79,15 @@ export function ShopScreen() {
       <Header onCartClick={() => setCartOpen(true)} />
 
       <div className="-mt-2 rounded-t-3xl bg-slate-50">
-        {liff.isDemo && (
+        {(liff.isDemo || isDemoMenu) && (
           <p className="mx-4 mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs text-amber-700 ring-1 ring-amber-200">
-            โหมดทดสอบ: ยังไม่ได้ตั้งค่า NEXT_PUBLIC_LIFF_ID จึงใช้ผู้ใช้จำลอง
+            โหมดทดสอบ:{" "}
+            {[
+              liff.isDemo && "ยังไม่ได้ตั้งค่า LIFF จึงใช้ผู้ใช้จำลอง",
+              isDemoMenu && "ยังไม่ได้เชื่อม Supabase จึงแสดงเมนูตัวอย่าง",
+            ]
+              .filter(Boolean)
+              .join(" / ")}
           </p>
         )}
 
