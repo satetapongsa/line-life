@@ -30,3 +30,9 @@ revoke insert, update, delete, truncate on
   from anon, authenticated;
 
 revoke all on public.orders, public.order_items from anon, authenticated;
+
+-- ให้สิทธิ์อ่านแบบชัดเจน (ไม่พึ่ง default grant ของแพลตฟอร์ม)
+grant usage on schema public to anon, authenticated;
+grant select on public.categories, public.products, public.product_options to anon, authenticated;
+grant all on public.categories, public.products, public.product_options,
+  public.orders, public.order_items to service_role;
