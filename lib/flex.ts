@@ -48,7 +48,7 @@ export function buildOrderFlex(order: Order): LiffMessages {
           paddingAll: "16px",
           contents: [
             { type: "text", text: SHOP_NAME, color: "#FFFFFF", size: "xs", weight: "bold" },
-            { type: "text", text: "สั่งซื้อสำเร็จ 🎉", color: "#FFFFFF", size: "xl", weight: "bold", margin: "sm" },
+            { type: "text", text: "สั่งซื้อสำเร็จ", color: "#FFFFFF", size: "xl", weight: "bold", margin: "sm" },
             { type: "text", text: `ออเดอร์ ${formatOrderNo(order.order_no)}`, color: "#E8F9EF", size: "sm" },
           ],
         },

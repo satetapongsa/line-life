@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { CartBar } from "@/components/CartBar";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import { CartSheet } from "@/components/CartSheet";
 import { CategoryTabs } from "@/components/CategoryTabs";
 import { Header } from "@/components/Header";
@@ -122,7 +123,9 @@ export function ShopScreen() {
               {groups.map((g, gi) => (
                 <div key={g.category.id} id={`cat-${g.category.slug}`}>
                   <h2 className="mb-3 flex items-center gap-2 text-base font-bold">
-                    <span className="h-5 w-1.5 rounded-full bg-brand-500" />
+                    <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                      <CategoryIcon slug={g.category.slug} size={18} />
+                    </span>
                     {g.category.name}
                     <span className="text-sm font-normal text-slate-400">{g.items.length} เมนู</span>
                   </h2>

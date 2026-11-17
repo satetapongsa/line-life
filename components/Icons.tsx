@@ -153,3 +153,70 @@ export const NoteIcon = (p: IconProps) => (
     <path d="M9 12h6M9 16h4" />
   </Svg>
 );
+
+export const BreadIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 13.5a8 6.5 0 0 1 16 0V17a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" />
+    <path d="m9 10.5 1.2 3.2M13 9.8l1.2 3.4M16.8 11.6l.6 2.2" />
+  </Svg>
+);
+
+export const CakeIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M3 21h18M4 21v-6.5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1V21" />
+    <path d="M4 17c2 1.5 3 1.5 4 0s2-1.5 4 0 3 1.5 4 0 2.5-1 4 0" />
+    <path d="M12 13.5V10M12 7.8c.9-.9.9-1.8 0-2.8-.9 1-.9 1.9 0 2.8z" />
+  </Svg>
+);
+
+export const GridIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+    <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+    <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+    <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
+  </Svg>
+);
+
+export const LockIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="5" y="11" width="14" height="9.5" rx="2" />
+    <path d="M8 11V8a4 4 0 0 1 8 0v3M12 15v2" />
+  </Svg>
+);
+
+export const PhoneIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="6.5" y="2.5" width="11" height="19" rx="2.5" />
+    <path d="M11 18.5h2" />
+  </Svg>
+);
+
+export const SparkleIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z" />
+    <path d="m19 16 .7 1.8 1.8.7-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z" />
+  </Svg>
+);
+
+export const CopyIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <rect x="9" y="9" width="11" height="11" rx="2" />
+    <path d="M5 15V6a2 2 0 0 1 2-2h9" />
+  </Svg>
+);
+
+export const BagIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M5 8h14l-1 12H6z" />
+    <path d="M9 8V6.5a3 3 0 0 1 6 0V8" />
+  </Svg>
+);
+
+export const WalletIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3" />
+    <path d="M4 7.5V17a2 2 0 0 0 2 2h13a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H6.5A2.5 2.5 0 0 1 4 7.5z" />
+    <circle cx="16" cy="13.5" r="1" />
+  </Svg>
+);

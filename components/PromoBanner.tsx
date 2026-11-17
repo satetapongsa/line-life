@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { BreadIcon, CupIcon, PhoneIcon } from "./Icons";
 
 const SLIDES = [
   {
@@ -8,21 +9,21 @@ const SLIDES = [
     subtitle: "เลือกเวลามารับ แล้วหยิบได้เลยที่ร้าน",
     tag: "Pre-order",
     className: "from-brand-500 to-emerald-600",
-    emoji: "🧋",
+    Icon: CupIcon,
   },
   {
     title: "จ่ายง่ายด้วยพร้อมเพย์",
     subtitle: "สแกน QR ได้ทุกแอปธนาคาร",
     tag: "PromptPay",
     className: "from-sky-500 to-indigo-500",
-    emoji: "📱",
+    Icon: PhoneIcon,
   },
   {
     title: "ครัวซองต์อบใหม่ทุกเช้า",
     subtitle: "เนยฝรั่งเศสแท้ หอมกรุ่นจากเตา",
     tag: "เมนูแนะนำ",
     className: "from-amber-500 to-orange-500",
-    emoji: "🥐",
+    Icon: BreadIcon,
   },
 ];
 
@@ -60,9 +61,11 @@ export function PromoBanner() {
               <p className="mt-2 text-lg leading-snug font-bold">{s.title}</p>
               <p className="text-xs text-white/90">{s.subtitle}</p>
             </div>
-            <span className="absolute -right-2 -bottom-4 text-[88px] opacity-90 select-none">
-              {s.emoji}
-            </span>
+            <s.Icon
+              size={104}
+              strokeWidth={1.2}
+              className="absolute -right-1 bottom-3 text-white/90"
+            />
             <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-white/10" />
           </div>
         ))}

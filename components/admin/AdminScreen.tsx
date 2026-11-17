@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { ChartIcon, ReceiptIcon, StoreIcon } from "@/components/Icons";
+import { ChartIcon, CheckIcon, CopyIcon, LockIcon, ReceiptIcon, StoreIcon } from "@/components/Icons";
 import { PageShell } from "@/components/PageShell";
 import { ErrorState, FullScreenLoader } from "@/components/StateViews";
 import { ClientApiError, useApi } from "@/hooks/useApi";
@@ -52,7 +52,9 @@ export function AdminScreen() {
     return (
       <PageShell title="หลังร้าน">
         <div className="flex flex-col items-center px-6 py-12 text-center">
-          <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-rose-50 text-4xl">🔒</div>
+          <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-rose-50 text-rose-500">
+            <LockIcon size={36} />
+          </div>
           <p className="font-semibold">หน้านี้สำหรับเจ้าของร้านเท่านั้น</p>
           <p className="mt-1 text-sm text-slate-500">
             ถ้าคุณเป็นเจ้าของร้าน ให้นำ LINE userId ด้านล่างไปใส่ใน env <code>ADMIN_LINE_USER_IDS</code> แล้ว deploy ใหม่
@@ -64,9 +66,10 @@ export function AdminScreen() {
               await navigator.clipboard?.writeText(me.userId).catch(() => {});
               setCopied(true);
             }}
-            className="mt-3 rounded-full bg-white px-4 py-2 text-sm font-medium ring-1 ring-slate-200 active:scale-95"
+            className="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium ring-1 ring-slate-200 active:scale-95"
           >
-            {copied ? "คัดลอกแล้ว ✓" : "คัดลอก userId"}
+            {copied ? <CheckIcon size={16} className="text-brand-600" /> : <CopyIcon size={16} />}
+            {copied ? "คัดลอกแล้ว" : "คัดลอก userId"}
           </button>
         </div>
       </PageShell>
