@@ -1,5 +1,6 @@
 import "server-only";
 
+import { unstable_rethrow } from "next/navigation";
 import { NextResponse } from "next/server";
 import { SupabaseNotConfiguredError } from "./supabase/server";
 
@@ -26,6 +27,8 @@ export async function handle(fn: () => Promise<Response>): Promise<Response> {
   try {
     return await fn();
   } catch (e) {
+    // error ภายในของ Next.js (เช่น สัญญาณว่า route นี้ต้องเป็น dynamic) ต้องโยนต่อ ห้ามกลืน
+    unstable_rethrow(e);
     if (e instanceof ApiError) {
       return json({ error: e.message, code: e.code }, { status: e.status });
     }
