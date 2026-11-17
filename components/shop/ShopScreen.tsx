@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useDeferredValue, useMemo, useState } from "react";
 import { CartBar } from "@/components/CartBar";
 import { CartSheet } from "@/components/CartSheet";
@@ -14,11 +15,11 @@ import { EmptyState, ErrorState, FullScreenLoader, Toast } from "@/components/St
 import { useCart } from "@/hooks/useCart";
 import { useLiff } from "@/hooks/useLiff";
 import { useProducts } from "@/hooks/useProducts";
-import { cartUnitPrice, formatBaht } from "@/lib/format";
 import type { Product } from "@/lib/types";
 
 export function ShopScreen() {
   const liff = useLiff();
+  const router = useRouter();
   const { status, categories, products, error, retry, isDemo: isDemoMenu } = useProducts();
   const cart = useCart();
 
@@ -28,7 +29,6 @@ export function ShopScreen() {
   const [selected, setSelected] = useState<Product | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [toast, setToast] = useState<{ msg: string | null; tick: number }>({ msg: null, tick: 0 });
-  const [sending, setSending] = useState(false);
 
   const showToast = useCallback((msg: string) => {
     setToast((t) => ({ msg, tick: t.tick + 1 }));
@@ -47,19 +47,6 @@ export function ShopScreen() {
       .filter((p) => !q || p.name.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q))
       .sort((a, b) => Number(b.is_available) - Number(a.is_available));
   }, [products, category, deferredQuery]);
-
-  async function checkout() {
-    setSending(true);
-    const summary =
-      `🧾 ออเดอร์ของ ${liff.profile?.displayName}\n` +
-      cart.items.map((i) => `• ${i.name} x${i.quantity} = ${cartUnitPrice(i) * i.quantity} บาท`).join("\n") +
-      `\nรวม ${formatBaht(cart.total)}`;
-    await liff.sendMessages([{ type: "text", text: summary }]);
-    cart.clear();
-    setCartOpen(false);
-    setSending(false);
-    showToast("ส่งออเดอร์แล้ว ขอบคุณค่ะ");
-  }
 
   if (liff.status === "loading") return <FullScreenLoader label="กำลังเชื่อมต่อ LINE..." />;
   if (liff.status === "error") {
@@ -146,9 +133,7 @@ export function ShopScreen() {
       <CartSheet
         open={cartOpen}
         onClose={() => setCartOpen(false)}
-        onCheckout={checkout}
-        checkoutLabel="สั่งซื้อเลย"
-        busy={sending}
+        onCheckout={() => router.push("/checkout")}
       />
       <Toast message={toast.msg} tick={toast.tick} />
     </main>
