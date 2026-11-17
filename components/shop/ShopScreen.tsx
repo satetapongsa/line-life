@@ -45,8 +45,18 @@ export function ShopScreen() {
     return products
       .filter((p) => category === "all" || p.category_id === category)
       .filter((p) => !q || p.name.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q))
-      .sort((a, b) => Number(b.is_available) - Number(a.is_available));
+      .sort((a, b) => Number(b.is_available) - Number(a.is_available) || a.sort_order - b.sort_order);
   }, [products, category, deferredQuery]);
+
+  // จัดกลุ่มตามหมวดหมู่ (เรียงตามลำดับหมวด) แสดงเป็นหัวข้อแยกชัดเจน
+  const groups = useMemo(
+    () =>
+      [...categories]
+        .sort((a, b) => a.sort_order - b.sort_order)
+        .map((c) => ({ category: c, items: visible.filter((p) => p.category_id === c.id) }))
+        .filter((g) => g.items.length > 0),
+    [categories, visible]
+  );
 
   if (liff.status === "loading") return <FullScreenLoader label="กำลังเชื่อมต่อ LINE..." />;
   if (liff.status === "error") {
@@ -108,15 +118,26 @@ export function ShopScreen() {
               }
             />
           ) : (
-            <div className="grid grid-cols-2 gap-3">
-              {visible.map((p, i) => (
-                <ProductCard
-                  key={p.id}
-                  product={p}
-                  inCart={qtyByProduct[p.id] ?? 0}
-                  onSelect={setSelected}
-                  priority={i < 4}
-                />
+            <div className="space-y-6">
+              {groups.map((g, gi) => (
+                <div key={g.category.id} id={`cat-${g.category.slug}`}>
+                  <h2 className="mb-3 flex items-center gap-2 text-base font-bold">
+                    <span className="h-5 w-1.5 rounded-full bg-brand-500" />
+                    {g.category.name}
+                    <span className="text-sm font-normal text-slate-400">{g.items.length} เมนู</span>
+                  </h2>
+                  <div className="grid grid-cols-2 gap-3">
+                    {g.items.map((p, i) => (
+                      <ProductCard
+                        key={p.id}
+                        product={p}
+                        inCart={qtyByProduct[p.id] ?? 0}
+                        onSelect={setSelected}
+                        priority={gi === 0 && i < 4}
+                      />
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           )}
