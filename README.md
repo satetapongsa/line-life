@@ -70,14 +70,14 @@ supabase/migrations/          SQL schema, RLS, storage, seed, create_order
 
 1. สร้างโปรเจคที่ https://supabase.com (Region แนะนำ Singapore)
 2. รัน migration ตามลำดับชื่อไฟล์ใน `supabase/migrations/` เลือกได้ 2 วิธี
-   - **SQL Editor (ง่ายสุด):** เปิด SQL Editor → New query → คัดลอกเนื้อหาไฟล์ทีละไฟล์ตามลำดับ `…0001_schema` → `…0002_rls` → `…0003_storage` → `…0004_seed` → `…0005_create_order` แล้วกด Run
+   - **SQL Editor (ง่ายสุด):** เปิด SQL Editor → New query → คัดลอกเนื้อหาไฟล์ทีละไฟล์ตามลำดับ `…0001_schema` → `…0002_rls` → `…0003_storage` → `…0004_seed` → `…0005_create_order` → `…0006_more_menu` แล้วกด Run
    - **Supabase CLI:**
      ```bash
      npx supabase login
      npx supabase link --project-ref <project-ref>
      npx supabase db push
      ```
-3. ตรวจที่ Table Editor ว่ามีสินค้า 8 รายการ และที่ Storage มี bucket `product-images` (public)
+3. ตรวจที่ Table Editor ว่ามีสินค้า 19 รายการ (เครื่องดื่ม 7 / เบเกอรี่ 6 / ของหวาน 6) และที่ Storage มี bucket `product-images` (public)
 4. ไปที่ **Project Settings → API** คัดลอก
    - Project URL → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon` / publishable key → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
@@ -121,6 +121,29 @@ supabase/migrations/          SQL schema, RLS, storage, seed, create_order
 ### 5. โลโก้
 
 วางไฟล์ `public/logo.png` (สี่เหลี่ยมจัตุรัส แนะนำ 512×512) ถ้ายังไม่มีไฟล์ หน้าเว็บจะแสดงไอคอนแก้วแทน
+
+### 6. เชื่อมเข้า LINE แชท
+
+LIFF คือหน้าเว็บที่ "เปิดในแอป LINE" ลูกค้าจะเข้าร้านได้ต้องมีทางเข้าจากในแชท วิธีที่ใช้จริงคือผูกกับ **LINE Official Account (OA)** ของร้าน (สร้างฟรีที่ https://manager.line.biz) แล้วทำ Rich Menu ให้กดเข้าร้านได้เลย
+
+**ขั้นที่ 1: ผูก OA กับ LINE Login channel**
+1. LINE Developers Console → channel LINE Login `Wave Dev` → แท็บ **Basic settings** → หัวข้อ **Linked LINE Official Account** → Edit → เลือก OA ของร้าน
+2. แท็บ **LIFF** → แก้ LIFF app → **Add friend option** เลือก `On (normal)` ลูกค้าที่เปิดร้านครั้งแรกจะมีตัวเลือกให้เพิ่มเพื่อน OA
+
+**ขั้นที่ 2: ทำ Rich Menu (ปุ่มเมนูด้านล่างแชท)**
+1. เปิด https://manager.line.biz → เลือก OA → **Rich menus** → สร้างเมนูใหม่ → อัปโหลดรูป (ขนาด 2500×843 หรือ 2500×1686 px) แล้วแบ่งช่องกดได้
+2. ตั้งแต่ละช่องเป็น Action ชนิด **Link** (URI)
+   - สั่งเครื่องดื่ม: `https://liff.line.me/2012656651-Pliqsgc0`
+   - ออเดอร์ของฉัน: `https://liff.line.me/2012656651-Pliqsgc0/orders`
+3. บันทึกและตั้งเป็นเมนูที่แสดง (Display) ลูกค้ากดจากแชทกับ OA แล้วร้านจะเปิดในแอปทันที
+
+**ทางลัดอื่น (ไม่ต้องทำรูป):** ตั้ง **ข้อความต้อนรับ** (Greeting message) หรือ **ตอบกลับอัตโนมัติ** ใน OA Manager ให้ส่งลิงก์ `https://liff.line.me/2012656651-Pliqsgc0` หรือพิมพ์ลิงก์ในแชทแล้วกด
+
+**ข้อควรรู้เรื่อง Flex Message ในแชท**
+- `liff.sendMessages` ส่งได้เฉพาะตอนที่ LIFF **ถูกเปิดจากห้องแชท** (แชทกับ OA, กลุ่ม หรือห้อง) เช่น เปิดจาก Rich Menu หรือกดลิงก์ในแชท ถ้าเปิดจากทางอื่น เช่น ลิงก์ในเบราว์เซอร์ ระบบจะข้ามขั้นตอนนี้ให้เอง ไม่ทำให้การสั่งซื้อพัง
+- ข้อความจะถูกส่งในนามของลูกค้าเอง (ไม่ใช่บอทของร้าน) ปุ่มใน Flex เปิดหน้าออเดอร์ผ่าน LIFF URL
+- ต้องเปิด scope `chat_message.write` ใน LIFF app (เปิดไว้แล้ว) และ channel ต้องเป็นสถานะ Published
+- ยังไม่มีการ push แจ้งเตือนอัตโนมัติเมื่อสถานะเปลี่ยน ลูกค้าดูได้ที่หน้า `/orders/[id]` ถ้าต้องการแจ้งเตือนเข้าแชท ต้องสร้าง Messaging API channel เพิ่มและใช้ channel access token ฝั่ง server
 
 ---
 
